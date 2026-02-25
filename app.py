@@ -18,7 +18,6 @@ st.markdown(CSS, unsafe_allow_html=True)
 
 DB = "amazon_analyser.db"
 
-# ── Database ──────────────────────────────────────────────────────────────────
 def db():
     conn = sqlite3.connect(DB)
     conn.row_factory = sqlite3.Row
@@ -83,7 +82,6 @@ def init_db():
 
 init_db()
 
-# ── Scraper ───────────────────────────────────────────────────────────────────
 UA = [
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/122.0.0.0 Safari/537.36",
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 Chrome/122.0.0.0 Safari/537.36",
@@ -105,7 +103,7 @@ def scrape(asin):
         raise Exception(f"HTTP {r.status_code} for ASIN {asin}.")
     if "captcha" in r.text.lower() and "robot" in r.text.lower():
         raise Exception("Amazon returned a CAPTCHA page. Try again in a few minutes.")
-    soup = BeautifulSoup(r.text, "lxml")
+    soup = BeautifulSoup(r.text, "html.parser")
     title_el = soup.find("span", id="productTitle")
     title = title_el.get_text(strip=True) if title_el else None
     bullets = []
@@ -123,7 +121,6 @@ def scrape(asin):
     return {"title": title, "bullets": bullets, "has_aplus": has_aplus,
             "description": description, "image_url": image_url, "brand": brand}
 
-# ── Analyser ──────────────────────────────────────────────────────────────────
 def kw_split(content, keywords):
     cl = content.lower()
     return [k for k in keywords if k.lower() in cl], [k for k in keywords if k.lower() not in cl]
@@ -184,7 +181,7 @@ def analyse(scraped, keywords, rule):
         if kr2 < 0.5:
             bi.append(f"Low keyword coverage in bullets ({len(found_b)}/{len(keywords)}). Weave in more target keywords.")
     a_s = rule["aplus_weight"] if has_aplus else 0
-    ai = [] if has_aplus else ["No A+ Content detected. Adding A+ can boost conversion by 5–10% and improves brand storytelling."]
+    ai = [] if has_aplus else ["No A+ Content detected. Adding A+ can boost conversion by 5-10% and improves brand storytelling."]
     mw4 = rule["keywords_weight"]
     ki, ks = [], 0
     all_content = " ".join(filter(None, [title, " ".join(bullets), desc]))
@@ -197,7 +194,7 @@ def analyse(scraped, keywords, rule):
         ks = mw4 * (cov / 100)
         thresh = rule.get("keywords_min_coverage", 70)
         if cov < thresh:
-            ki.append(f"Keyword coverage {cov:.0f}% (target >= {thresh:.0f}%). Missing: {', '.join(miss_k[:8])}{'…' if len(miss_k)>8 else ''}.")
+            ki.append(f"Keyword coverage {cov:.0f}% (target >= {thresh:.0f}%). Missing: {', '.join(miss_k[:8])}{'...' if len(miss_k)>8 else ''}.")
         if rule.get("keywords_in_title") and keywords:
             ft2, _ = kw_split(title, keywords[:3])
             if not ft2:
@@ -217,7 +214,6 @@ def analyse(scraped, keywords, rule):
             "title_issues": ti, "bullets_issues": bi, "aplus_issues": ai, "keywords_issues": ki,
             "found_keywords": found_k, "missing_keywords": miss_k, "suggested_keywords": suggestions}
 
-# ── UI Helpers ────────────────────────────────────────────────────────────────
 def score_emoji(s):
     if s is None: return "⚪"
     if s >= 85: return "🟢"
@@ -252,7 +248,6 @@ def show_issues(issues):
     for iss in issues:
         st.markdown(f'<div class="issue-box">⚠️ {iss}</div>', unsafe_allow_html=True)
 
-# ── Sidebar Navigation ────────────────────────────────────────────────────────
 with st.sidebar:
     st.markdown("## 🛒 Amazon\n### Content Analyser")
     st.caption("Amazon.co.uk · UK Marketplace")
@@ -261,7 +256,6 @@ with st.sidebar:
                                "🏷️  Product Lines","⚙️  Scoring Rules","📜  History"],
                     label_visibility="collapsed")
 
-# ── Dashboard ─────────────────────────────────────────────────────────────────
 if page == "🏠  Dashboard":
     st.title("Dashboard")
     conn = db()
@@ -287,7 +281,6 @@ if page == "🏠  Dashboard":
             c3.write(f"{score_emoji(s)} **{s:.0f}/100**" if s is not None else "❌ Error")
             c4.caption(str(r["created_at"])[:10])
 
-# ── New Analysis ──────────────────────────────────────────────────────────────
 elif page == "🔍  New Analysis":
     st.title("New Analysis")
     conn = db()
@@ -300,9 +293,9 @@ elif page == "🔍  New Analysis":
     asins_raw = st.text_area("ASINs (one per line)", placeholder="B08N5WRWNW\nB09XYZ1234", height=120)
     line_names = [f"{l['name']} ({len(json.loads(l['keywords']))} keywords)" for l in lines]
     sel_line = st.selectbox("Product Line", line_names)
-    rule_names = [f"{r['name']}{'  ✓ Default' if r['is_default'] else ''}" for r in rules]
+    rule_names = [f"{r['name']}{'  Default' if r['is_default'] else ''}" for r in rules]
     sel_rule = st.selectbox("Scoring Rule", rule_names)
-    if st.button("▶️  Run Analysis", type="primary", use_container_width=True):
+    if st.button("Run Analysis", type="primary", use_container_width=True):
         asins = [a.strip().upper() for a in asins_raw.strip().splitlines() if a.strip()]
         if not asins:
             st.error("Please enter at least one ASIN.")
@@ -311,9 +304,9 @@ elif page == "🔍  New Analysis":
         rule_obj = rules[rule_names.index(sel_rule)]
         keywords = json.loads(line_obj["keywords"])
         rule_dict = dict(rule_obj)
-        bar = st.progress(0, text="Starting…")
+        bar = st.progress(0, text="Starting...")
         for i, asin in enumerate(asins):
-            bar.progress(i / len(asins), text=f"Scraping {asin}…")
+            bar.progress(i / len(asins), text=f"Scraping {asin}...")
             conn = db()
             try:
                 scraped = scrape(asin)
@@ -353,7 +346,7 @@ elif page == "🔍  New Analysis":
                     st.markdown(kw_badges(result["found_keywords"],"kw-found") + kw_badges(result["missing_keywords"],"kw-missing"), unsafe_allow_html=True)
                     st.caption("🟢 Found in listing   🔴 Missing from listing")
                 if result["suggested_keywords"]:
-                    st.markdown("**💡 Suggested keywords** *(extracted from product content)*:")
+                    st.markdown("**💡 Suggested keywords (extracted from product content):**")
                     st.markdown(kw_badges(result["suggested_keywords"],"kw-suggest"), unsafe_allow_html=True)
             except Exception as e:
                 conn.execute("INSERT INTO results (asin,product_line_id,scoring_rule_id,scrape_error,total_score) VALUES (?,?,?,?,0)",
@@ -364,7 +357,6 @@ elif page == "🔍  New Analysis":
                 conn.close()
         bar.progress(1.0, text="Done!")
 
-# ── Product Lines ─────────────────────────────────────────────────────────────
 elif page == "🏷️  Product Lines":
     st.title("Product Lines")
     conn = db()
@@ -380,7 +372,7 @@ elif page == "🏷️  Product Lines":
                 kws = [k.strip() for k in re.split(r'[,\n]+', new_kws) if k.strip()]
                 try:
                     conn.execute("INSERT INTO product_lines (name,keywords) VALUES (?,?)", (new_name.strip(), json.dumps(kws)))
-                    conn.commit(); st.success(f"✅ Created with {len(kws)} keywords!"); st.rerun()
+                    conn.commit(); st.success(f"Created with {len(kws)} keywords!"); st.rerun()
                 except Exception as e:
                     st.error(str(e))
     st.markdown("---")
@@ -392,23 +384,22 @@ elif page == "🏷️  Product Lines":
             en = st.text_input("Name", value=line["name"], key=f"ln_{line['id']}")
             ek = st.text_area("Keywords", value="\n".join(kws), height=150, key=f"lk_{line['id']}")
             c1,c2 = st.columns(2)
-            if c1.button("💾 Save", key=f"ls_{line['id']}"):
+            if c1.button("Save", key=f"ls_{line['id']}"):
                 nk = [k.strip() for k in ek.strip().splitlines() if k.strip()]
                 conn.execute("UPDATE product_lines SET name=?,keywords=? WHERE id=?", (en.strip(), json.dumps(nk), line["id"]))
                 conn.commit(); st.rerun()
-            if c2.button("🗑️ Delete", key=f"ld_{line['id']}"):
+            if c2.button("Delete", key=f"ld_{line['id']}"):
                 conn.execute("DELETE FROM product_lines WHERE id=?", (line["id"],))
                 conn.commit(); st.rerun()
     conn.close()
 
-# ── Scoring Rules ─────────────────────────────────────────────────────────────
 elif page == "⚙️  Scoring Rules":
     st.title("Scoring Rules")
     conn = db()
     rules = conn.execute("SELECT * FROM scoring_rules ORDER BY is_default DESC, name").fetchall()
     with st.expander("➕ Create New Scoring Rule"):
         rname = st.text_input("Rule name", placeholder="e.g. Strict SEO")
-        st.markdown("**Category Weights** *(must sum to 100)*")
+        st.markdown("**Category Weights** (must sum to 100)")
         rc1,rc2,rc3,rc4 = st.columns(4)
         tw=rc1.number_input("Title %",0,100,25,key="ntw")
         bw=rc2.number_input("Bullets %",0,100,25,key="nbw")
@@ -432,19 +423,18 @@ elif page == "⚙️  Scoring Rules":
                 try:
                     conn.execute("INSERT INTO scoring_rules (name,title_weight,bullets_weight,aplus_weight,keywords_weight,title_min_length,title_max_length,title_keyword_in_first,bullets_min_count,bullets_min_length,bullets_max_length,keywords_min_coverage,keywords_in_title) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)",
                                  (rname.strip(),tw,bw,aw,kw_,tmin,tmax,int(tkif),bmc,bml,bmx,kmc,int(kit)))
-                    conn.commit(); st.success("✅ Rule created!"); st.rerun()
+                    conn.commit(); st.success("Rule created!"); st.rerun()
                 except Exception as e: st.error(str(e))
     st.markdown("---")
     for rule in rules:
-        with st.expander(f"**{rule['name']}**{'  ✅ Default' if rule['is_default'] else ''}"):
+        with st.expander(f"**{rule['name']}**{'  (Default)' if rule['is_default'] else ''}"):
             st.markdown(f"Weights: Title {rule['title_weight']}% | Bullets {rule['bullets_weight']}% | A+ {rule['aplus_weight']}% | Keywords {rule['keywords_weight']}%")
-            st.markdown(f"Title: {rule['title_min_length']}–{rule['title_max_length']} chars | Bullets: ≥{rule['bullets_min_count']}, {rule['bullets_min_length']}–{rule['bullets_max_length']} chars/bullet | KW coverage ≥ {rule['keywords_min_coverage']}%")
+            st.markdown(f"Title: {rule['title_min_length']}–{rule['title_max_length']} chars | Bullets: min {rule['bullets_min_count']}, {rule['bullets_min_length']}–{rule['bullets_max_length']} chars/bullet | KW coverage >= {rule['keywords_min_coverage']}%")
             if not rule["is_default"]:
-                if st.button("🗑️ Delete", key=f"rd_{rule['id']}"):
+                if st.button("Delete", key=f"rd_{rule['id']}"):
                     conn.execute("DELETE FROM scoring_rules WHERE id=?", (rule["id"],)); conn.commit(); st.rerun()
     conn.close()
 
-# ── History ───────────────────────────────────────────────────────────────────
 elif page == "📜  History":
     st.title("Analysis History")
     conn = db()
@@ -454,7 +444,7 @@ elif page == "📜  History":
         st.info("No analyses yet.")
     for r in rows:
         s = r["total_score"]
-        label = f"{score_emoji(s)} `{r['asin']}` — {r['product_name'] or '—'} — {f'{s:.0f}/100' if s is not None else 'Error'} — {str(r['created_at'] or '')[:10]}"
+        label = f"{score_emoji(s)} {r['asin']} — {r['product_name'] or '—'} — {f'{s:.0f}/100' if s is not None else 'Error'} — {str(r['created_at'] or '')[:10]}"
         with st.expander(label):
             if r["scrape_error"]:
                 st.error(f"Error: {r['scrape_error']}"); continue
@@ -463,7 +453,7 @@ elif page == "📜  History":
             col1.markdown(f"**Title:** {r['title'] or '—'}")
             if r["title"]: col1.caption(f"{len(r['title'])} characters")
             col1.markdown(f"A+ Content: {'✅ Yes' if r['has_aplus'] else '❌ No'}")
-            col1.markdown(f"[🔗 View on Amazon](https://www.amazon.co.uk/dp/{r['asin']})")
+            col1.markdown(f"[View on Amazon](https://www.amazon.co.uk/dp/{r['asin']})")
             rw = {"title_weight":25,"bullets_weight":25,"aplus_weight":25,"keywords_weight":25}
             progress_bar(r["title_score"] or 0,    rw["title_weight"],    "📝 Title")
             show_issues(json.loads(r["title_issues"] or "[]"))
@@ -479,13 +469,13 @@ elif page == "📜  History":
                 st.markdown(kw_badges(found,"kw-found")+kw_badges(missing,"kw-missing"), unsafe_allow_html=True)
                 st.caption("🟢 Found   🔴 Missing")
             if suggest:
-                st.markdown("**💡 Suggested:**")
+                st.markdown("**Suggested keywords:**")
                 st.markdown(kw_badges(suggest,"kw-suggest"), unsafe_allow_html=True)
             if r["bullets"]:
-                with st.expander("📋 View bullet points"):
+                with st.expander("View bullet points"):
                     for i,b in enumerate(json.loads(r["bullets"])):
-                        st.markdown(f"**{i+1}.** {b}  `{len(b)} chars`")
+                        st.markdown(f"**{i+1}.** {b}  ({len(b)} chars)")
             conn2 = db()
-            if st.button("🗑️ Delete", key=f"del_{r['id']}"):
+            if st.button("Delete this result", key=f"del_{r['id']}"):
                 conn2.execute("DELETE FROM results WHERE id=?", (r["id"],)); conn2.commit(); st.rerun()
             conn2.close()
