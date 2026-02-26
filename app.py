@@ -10,39 +10,225 @@ st.set_page_config(page_title="Amazon Analyser", page_icon="\U0001f6d2", layout=
 DARK_CSS = """
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-html,body,[class*='css']{font-family:'Inter',sans-serif!important}
-#MainMenu,footer,header{visibility:hidden}
-.stDeployButton{display:none!important}
-.stApp{background:#0D0D17!important}
-.main .block-container{max-width:1080px;padding:2rem 2rem 6rem}
-[data-testid='stSidebar']{background:#09090F!important;border-right:1px solid rgba(124,58,237,.18)!important}
-[data-testid='stSidebar'] p,[data-testid='stSidebar'] div,[data-testid='stSidebar'] span{color:#7070A0!important}
-[data-testid='stSidebar'] .stRadio label{font-size:.875rem!important;font-weight:500!important;color:#9090C0!important;padding:9px 12px!important;border-radius:9px!important;display:block!important;transition:all .15s!important}
-[data-testid='stSidebar'] .stRadio label:hover{background:rgba(124,58,237,.12)!important;color:#C8B0FF!important}
-[data-testid='stSidebar'] hr{border-color:rgba(124,58,237,.15)!important}
-[data-testid='metric-container']{background:rgba(124,58,237,.09)!important;border:1px solid rgba(124,58,237,.28)!important;border-radius:18px!important;padding:22px 26px!important}
-[data-testid='metric-container'] label{font-size:.7rem!important;font-weight:700!important;text-transform:uppercase!important;letter-spacing:.08em!important;color:#6B6B9A!important}
-[data-testid='metric-container'] [data-testid='stMetricValue']{font-size:2.3rem!important;font-weight:800!important;color:#F0F0FF!important;letter-spacing:-.04em!important}
-.stButton>button{font-family:'Inter',sans-serif!important;font-weight:600!important;font-size:.855rem!important;border-radius:10px!important;padding:.48rem 1.3rem!important;border:1px solid rgba(255,255,255,.1)!important;background:rgba(255,255,255,.04)!important;color:#B0B0D8!important;transition:all .15s!important}
-.stButton>button:hover{border-color:rgba(124,58,237,.5)!important;background:rgba(124,58,237,.12)!important;color:#C8B0FF!important}
-.stButton>button[kind='primary']{background:linear-gradient(135deg,#7C3AED,#9D4EDD)!important;color:#fff!important;border:none!important;box-shadow:0 4px 20px rgba(124,58,237,.35)!important}
-.stButton>button[kind='primary']:hover{background:linear-gradient(135deg,#6D28D9,#8B44CC)!important;box-shadow:0 6px 28px rgba(124,58,237,.5)!important;transform:translateY(-1px)!important;color:#fff!important}
-[data-testid='stTextInput'] input,[data-testid='stNumberInput'] input{background:rgba(255,255,255,.04)!important;border:1px solid rgba(255,255,255,.1)!important;border-radius:10px!important;color:#E0E0FF!important;font-size:.875rem!important}
-[data-testid='stTextInput'] input:focus,[data-testid='stNumberInput'] input:focus{border-color:#7C3AED!important;box-shadow:0 0 0 3px rgba(124,58,237,.18)!important}
-[data-testid='stTextArea'] textarea{background:rgba(255,255,255,.04)!important;border:1px solid rgba(255,255,255,.1)!important;border-radius:12px!important;color:#E0E0FF!important;font-size:.875rem!important;line-height:1.65!important}
-[data-testid='stTextArea'] textarea:focus{border-color:#7C3AED!important;box-shadow:0 0 0 3px rgba(124,58,237,.18)!important}
-[data-testid='stSelectbox']>div>div{background:rgba(255,255,255,.04)!important;border:1px solid rgba(255,255,255,.1)!important;border-radius:10px!important;color:#E0E0FF!important}
-[data-testid='stExpander']{background:#13131F!important;border:1px solid rgba(255,255,255,.07)!important;border-radius:16px!important;margin-bottom:10px!important;overflow:hidden!important}
-[data-testid='stExpander'] summary{font-weight:600!important;font-size:.88rem!important;color:#C8C8F0!important;padding:16px 20px!important;background:#13131F!important;letter-spacing:-.01em!important}
-[data-testid='stExpander'] summary:hover{background:#1A1A2E!important}
-[data-testid='stExpander']>div:last-child{padding:4px 20px 20px!important;background:#13131F!important}
-[data-testid='stCheckbox'] label{font-size:.875rem!important;color:#9090C0!important}
-[data-testid='stAlert']{border-radius:12px!important;border:none!important;font-size:.855rem!important}
-[data-testid='stDownloadButton']>button{background:rgba(255,255,255,.05)!important;border:1px solid rgba(255,255,255,.1)!important;color:#B0B0D8!important;border-radius:10px!important;font-weight:600!important}
-[data-testid='stDownloadButton']>button:hover{border-color:rgba(124,58,237,.5)!important;color:#C8B0FF!important}
-hr{border:none!important;border-top:1px solid rgba(255,255,255,.07)!important;margin:1.5rem 0!important}
-code{background:rgba(124,58,237,.18)!important;color:#B090FF!important;border-radius:6px!important;padding:2px 8px!important;font-size:.82rem!important}
-p,li{color:#9090B8!important;line-height:1.65!important}
+
+/* ── RESET & BASE ── */
+html, body, [class*="css"] { font-family: 'Inter', sans-serif !important; }
+#MainMenu, footer, header { visibility: hidden; }
+.stDeployButton { display: none !important; }
+
+/* ── APP BACKGROUND ── */
+.stApp { background: #0B0B15 !important; }
+.main .block-container { max-width: 1080px; padding: 2.5rem 2.5rem 6rem; }
+
+/* ── SIDEBAR ── */
+[data-testid="stSidebar"] {
+    background: #080810 !important;
+    border-right: 1px solid rgba(124,58,237,.2) !important;
+}
+[data-testid="stSidebar"] * { color: #9090C0 !important; }
+[data-testid="stSidebar"] .stRadio label {
+    font-size: .875rem !important; font-weight: 500 !important;
+    color: #A0A0D0 !important; padding: 9px 14px !important;
+    border-radius: 9px !important; display: block !important;
+    transition: all .15s !important; margin: 2px 0 !important;
+}
+[data-testid="stSidebar"] .stRadio label:hover {
+    background: rgba(124,58,237,.15) !important; color: #C8B0FF !important;
+}
+[data-testid="stSidebar"] hr { border-color: rgba(124,58,237,.2) !important; }
+
+/* ── METRIC CARDS ── */
+[data-testid="metric-container"] {
+    background: #12122A !important;
+    border: 1px solid rgba(124,58,237,.3) !important;
+    border-radius: 18px !important; padding: 22px 26px !important;
+    box-shadow: 0 0 30px rgba(124,58,237,.07) !important;
+}
+[data-testid="metric-container"] label {
+    font-size: .7rem !important; font-weight: 700 !important;
+    text-transform: uppercase !important; letter-spacing: .08em !important;
+    color: #7B7BAA !important;
+}
+[data-testid="metric-container"] [data-testid="stMetricValue"] {
+    font-size: 2.3rem !important; font-weight: 800 !important;
+    color: #F0F0FF !important; letter-spacing: -.04em !important;
+}
+
+/* ── BUTTONS ── */
+.stButton > button {
+    font-family: 'Inter', sans-serif !important; font-weight: 600 !important;
+    font-size: .855rem !important; border-radius: 10px !important;
+    padding: .5rem 1.4rem !important;
+    border: 1px solid rgba(124,58,237,.3) !important;
+    background: rgba(124,58,237,.1) !important;
+    color: #C4B5FD !important; transition: all .18s !important;
+    box-shadow: none !important;
+}
+.stButton > button:hover {
+    border-color: rgba(124,58,237,.7) !important;
+    background: rgba(124,58,237,.22) !important;
+    color: #EDE9FE !important; transform: translateY(-1px) !important;
+    box-shadow: 0 4px 16px rgba(124,58,237,.25) !important;
+}
+.stButton > button[kind="primary"] {
+    background: linear-gradient(135deg, #6D28D9, #8B5CF6) !important;
+    color: #FFFFFF !important; border: none !important;
+    box-shadow: 0 4px 20px rgba(109,40,217,.4) !important;
+}
+.stButton > button[kind="primary"]:hover {
+    background: linear-gradient(135deg, #5B21B6, #7C3AED) !important;
+    box-shadow: 0 6px 28px rgba(109,40,217,.55) !important;
+    color: #FFFFFF !important; border: none !important;
+}
+
+/* ── TEXT INPUTS ── */
+[data-testid="stTextInput"] input,
+[data-testid="stNumberInput"] input {
+    background: #0F0F20 !important;
+    border: 1.5px solid rgba(124,58,237,.25) !important;
+    border-radius: 10px !important;
+    color: #E8E8FF !important;
+    font-size: .875rem !important;
+    caret-color: #8B5CF6 !important;
+}
+[data-testid="stTextInput"] input:focus,
+[data-testid="stNumberInput"] input:focus {
+    border-color: #7C3AED !important;
+    box-shadow: 0 0 0 3px rgba(124,58,237,.2) !important;
+    outline: none !important;
+}
+[data-testid="stTextInput"] input::placeholder,
+[data-testid="stNumberInput"] input::placeholder {
+    color: #5A5A80 !important;
+}
+
+/* ── TEXT AREA ── */
+[data-testid="stTextArea"] textarea {
+    background: #0F0F20 !important;
+    border: 1.5px solid rgba(124,58,237,.25) !important;
+    border-radius: 12px !important;
+    color: #E8E8FF !important;
+    font-size: .875rem !important; line-height: 1.65 !important;
+    caret-color: #8B5CF6 !important;
+}
+[data-testid="stTextArea"] textarea:focus {
+    border-color: #7C3AED !important;
+    box-shadow: 0 0 0 3px rgba(124,58,237,.2) !important;
+}
+[data-testid="stTextArea"] textarea::placeholder { color: #5A5A80 !important; }
+[data-testid="stTextArea"] label { color: #A0A0D0 !important; font-size: .8rem !important; }
+
+/* ── SELECTBOX — THE MAIN FIX ── */
+[data-testid="stSelectbox"] > div > div {
+    background: #0F0F20 !important;
+    border: 1.5px solid rgba(124,58,237,.25) !important;
+    border-radius: 10px !important;
+    color: #E8E8FF !important;
+}
+[data-testid="stSelectbox"] > div > div > div { color: #E8E8FF !important; }
+[data-testid="stSelectbox"] svg { fill: #8B5CF6 !important; }
+/* Dropdown popup */
+[data-baseweb="popover"], [data-baseweb="menu"],
+div[role="listbox"], ul[role="listbox"] {
+    background: #1A1A2E !important;
+    border: 1px solid rgba(124,58,237,.35) !important;
+    border-radius: 10px !important;
+}
+li[role="option"] {
+    background: #1A1A2E !important; color: #E8E8FF !important;
+    font-size: .875rem !important;
+}
+li[role="option"]:hover, li[aria-selected="true"] {
+    background: rgba(124,58,237,.2) !important; color: #EDE9FE !important;
+}
+
+/* ── EXPANDER ── */
+[data-testid="stExpander"] {
+    background: #10101E !important;
+    border: 1px solid rgba(124,58,237,.18) !important;
+    border-radius: 16px !important; margin-bottom: 10px !important;
+    overflow: hidden !important;
+}
+[data-testid="stExpander"] summary {
+    font-weight: 600 !important; font-size: .88rem !important;
+    color: #C8C8F0 !important; padding: 16px 20px !important;
+    background: #10101E !important; letter-spacing: -.01em !important;
+    border-radius: 16px !important;
+}
+[data-testid="stExpander"] summary:hover { background: #16162A !important; }
+[data-testid="stExpander"] > div:last-child {
+    padding: 4px 20px 20px !important; background: #10101E !important;
+}
+[data-testid="stExpander"] summary svg { fill: #8B5CF6 !important; }
+
+/* ── NUMBER INPUT STEPPERS ── */
+[data-testid="stNumberInput"] button {
+    background: #1A1A2E !important; color: #8B5CF6 !important;
+    border: 1px solid rgba(124,58,237,.2) !important;
+    border-radius: 8px !important;
+}
+
+/* ── CHECKBOX ── */
+[data-testid="stCheckbox"] label { color: #A0A0D0 !important; font-size: .875rem !important; }
+[data-testid="stCheckbox"] span { border-color: rgba(124,58,237,.4) !important; }
+
+/* ── SLIDER ── */
+[data-testid="stSlider"] { color: #A0A0D0 !important; }
+[data-testid="stSlider"] > div > div > div { background: #7C3AED !important; }
+[data-testid="stSlider"] label { color: #A0A0D0 !important; }
+
+/* ── ALERTS ── */
+[data-testid="stAlert"] {
+    background: rgba(239,68,68,.1) !important;
+    border: 1px solid rgba(239,68,68,.3) !important;
+    border-radius: 12px !important; color: #FCA5A5 !important;
+    font-size: .855rem !important;
+}
+
+/* ── PROGRESS BAR ── */
+[data-testid="stProgressBar"] > div { background: rgba(255,255,255,.07) !important; border-radius: 999px !important; }
+[data-testid="stProgressBar"] > div > div { background: linear-gradient(90deg,#7C3AED,#8B5CF6) !important; border-radius: 999px !important; }
+
+/* ── DOWNLOAD BUTTON ── */
+[data-testid="stDownloadButton"] > button {
+    background: rgba(124,58,237,.1) !important;
+    border: 1px solid rgba(124,58,237,.3) !important;
+    color: #C4B5FD !important; border-radius: 10px !important;
+    font-weight: 600 !important;
+}
+[data-testid="stDownloadButton"] > button:hover {
+    background: rgba(124,58,237,.22) !important;
+    border-color: rgba(124,58,237,.6) !important; color: #EDE9FE !important;
+}
+
+/* ── CAPTION / SMALL TEXT ── */
+[data-testid="stCaptionContainer"] { color: #7B7BAA !important; font-size: .78rem !important; }
+
+/* ── DIVIDER ── */
+hr { border: none !important; border-top: 1px solid rgba(255,255,255,.07) !important; margin: 1.5rem 0 !important; }
+
+/* ── INLINE CODE ── */
+code {
+    background: rgba(124,58,237,.2) !important; color: #C4B5FD !important;
+    border-radius: 6px !important; padding: 2px 8px !important;
+    font-size: .82rem !important; font-family: 'SF Mono','Fira Code',monospace !important;
+}
+
+/* ── BASE TEXT ── */
+p, li { color: #A0A0D0 !important; line-height: 1.65 !important; }
+h1, h2, h3 { color: #F0F0FF !important; }
+
+/* ── RADIO GROUP CONTAINER ── */
+[data-testid="stRadio"] > label { color: #7B7BAA !important; font-size: .72rem !important; font-weight: 700 !important; text-transform: uppercase !important; letter-spacing: .07em !important; }
+
+/* ── COLUMNS GAP FIX ── */
+[data-testid="column"] { padding-left: 8px !important; padding-right: 8px !important; }
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #0B0B15; }
+::-webkit-scrollbar-thumb { background: rgba(124,58,237,.3); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(124,58,237,.5); }
 </style>
 """
 st.markdown(DARK_CSS, unsafe_allow_html=True)
@@ -183,7 +369,7 @@ def analyse(scraped, keywords, rule):
         found_t, _ = kw_split(title, keywords)
         kr = len(found_t) / len(keywords) if keywords else 1.0
         ts += mw * 0.40 * kr
-        if kr < 0.3: ti.append("Only " + str(len(found_t)) + "/" + str(len(keywords)) + " keywords in title \u2014 move top keywords near the start.")
+        if kr < 0.3: ti.append("Only " + str(len(found_t)) + "/" + str(len(keywords)) + " keywords in title.")
         elif kr < 0.6: ti.append(str(len(found_t)) + "/" + str(len(keywords)) + " keywords in title \u2014 room to improve.")
         if rule.get("title_keyword_in_first") and keywords:
             if not any(k.lower() in title[:80].lower() for k in keywords[:3]):
@@ -243,7 +429,6 @@ def analyse(scraped, keywords, rule):
             "title_issues": ti, "bullets_issues": bi, "aplus_issues": ai, "keywords_issues": ki,
             "found_keywords": found_k, "missing_keywords": miss_k, "suggested_keywords": suggestions}
 
-# ── KEYWORD GAPS ───────────────────────────────────────────────────────────────
 def keyword_gaps(title, bullets_list, pl_keywords):
     tl = (title or "").lower()
     bt = " ".join(bullets_list or []).lower()
@@ -288,16 +473,14 @@ def smart_rewrite(bullet, keyword):
     if btype == "benefit":
         if len(words) >= 3: return words[0] + " " + kw + " " + " ".join(words[1:]) + ".", "benefit-subject", 84
         return kc + " \u2014 " + b + ".", "benefit-prefix", 72
-    if btype == "specification":
-        return kc + ": " + b + ".", "spec-qualifier", 85
+    if btype == "specification": return kc + ": " + b + ".", "spec-qualifier", 85
     if btype == "quality":
         for qa in ["premium","durable","professional","high-quality","robust","lightweight","compact"]:
             if qa in bl:
                 qi = bl.index(qa) + len(qa)
                 return b[:qi] + " " + kw + b[qi:] + ".", "quality-adjective", 83
         return kc + " \u2014 " + b + ".", "quality-prefix", 70
-    if btype == "action":
-        return b + " for " + kw + " use.", "action-usecase", 79
+    if btype == "action": return b + " for " + kw + " use.", "action-usecase", 79
     if btype == "compatibility":
         for phrase in ["ideal for","perfect for","suitable for","designed for"]:
             if phrase in bl:
@@ -305,8 +488,7 @@ def smart_rewrite(bullet, keyword):
                 if rest: return b[:pi] + " " + kw + " and " + rest + ".", "compat-extend", 87
                 return b[:pi] + " " + kw + ".", "compat-add", 82
         return b + ", " + kw + " compatible.", "compat-suffix", 74
-    if btype == "problem_solution":
-        return b + " \u2014 ideal for " + kw + ".", "problem-ideal", 74
+    if btype == "problem_solution": return b + " \u2014 ideal for " + kw + ".", "problem-ideal", 74
     if " and " in bl:
         ai = bl.rindex(" and ")
         if ai > 5: return b[:ai] + ", " + kw + b[ai:] + ".", "general-and-insert", 74
@@ -328,8 +510,7 @@ def bullet_rewrite_suggestions(bullets_list, missing_kws):
         best_idx, best_score = 0, -1
         for i, bul in enumerate(bullets_list):
             bul_words = set(re.findall(r"\b\w{3,}\b", bul.lower()))
-            score = (len(kw_words & bul_words) * 3
-                     + max(0, (300 - len(bul)) / 300)
+            score = (len(kw_words & bul_words) * 3 + max(0,(300-len(bul))/300)
                      + (0.5 if "," in bul or " and " in bul.lower() else 0))
             if score > best_score: best_score, best_idx = score, i
         orig = bullets_list[best_idx]
@@ -344,10 +525,10 @@ def bullet_rewrite_suggestions(bullets_list, missing_kws):
 def build_excel(rows):
     wb = openpyxl.Workbook(); ws = wb.active; ws.title = "Analysis Results"
     ws.freeze_panes = "A2"
-    hf = Font(bold=True, color="FFFFFF", name="Calibri", size=10)
-    hfill = PatternFill("solid", fgColor="1A1A2E")
-    alt   = PatternFill("solid", fgColor="0D0D17")
-    thin  = Border(bottom=Side(style="thin", color="2A2A3E"))
+    hf    = Font(bold=True, color="FFFFFF", name="Calibri", size=10)
+    hfill = PatternFill("solid", fgColor="12122A")
+    alt   = PatternFill("solid", fgColor="0B0B15")
+    thin  = Border(bottom=Side(style="thin", color="1E1E3A"))
     hdrs  = ["ASIN","Product","Date","Score","Title","Bullets","A+","Keywords",
              "Has A+","Title Missing KWs","Bullets Missing KWs","All Missing KWs","Issues"]
     for c, h in enumerate(hdrs, 1):
@@ -355,9 +536,9 @@ def build_excel(rows):
         cell.font = hf; cell.fill = hfill; cell.border = thin
         cell.alignment = Alignment(horizontal="center", vertical="center")
     for ri, r in enumerate(rows, 2):
-        blist   = json.loads(r["bullets"] or "[]")
-        pl_kws  = json.loads(r["pl_keywords"] or "[]") if "pl_keywords" in r.keys() else []
-        tm, bm  = keyword_gaps(r["title"] or "", blist, pl_kws) if pl_kws else ([], [])
+        blist  = json.loads(r["bullets"] or "[]")
+        pl_kws = json.loads(r["pl_keywords"] or "[]") if "pl_keywords" in r.keys() else []
+        tm, bm = keyword_gaps(r["title"] or "", blist, pl_kws) if pl_kws else ([], [])
         vals = [r["asin"], r["product_name"] or "\u2014", str(r["created_at"] or "")[:10],
                 r["total_score"], r["title_score"], r["bullets_score"], r["aplus_score"], r["keywords_score"],
                 "Yes" if r["has_aplus"] else "No",
@@ -401,21 +582,21 @@ def show(html): st.markdown(html, unsafe_allow_html=True)
 def score_gauge(s, size=112):
     if s is None: s = 0
     c, bg, tc, lbl = _score_meta(s)
-    pct = max(0, min(100, s)); rem = 100 - pct; sz = str(size)
+    pct = max(0, min(100, s)); rem = 100 - pct
     return (
-        '<div style="display:flex;flex-direction:column;align-items:center;gap:8px">'
-        '<div style="position:relative;width:' + sz + 'px;height:' + sz + 'px">'
+        '<div style="display:flex;flex-direction:column;align-items:center;gap:10px">'
+        '<div style="position:relative;width:' + str(size) + 'px;height:' + str(size) + 'px">'
         '<svg viewBox="0 0 36 36" style="width:100%;height:100%;transform:rotate(-90deg)">'
-        '<circle cx="18" cy="18" r="15.9155" fill="none" stroke="rgba(255,255,255,.07)" stroke-width="2.5"/>'
-        '<circle cx="18" cy="18" r="15.9155" fill="none" stroke="' + c + '" stroke-width="2.5"'
+        '<circle cx="18" cy="18" r="15.9155" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="3"/>'
+        '<circle cx="18" cy="18" r="15.9155" fill="none" stroke="' + c + '" stroke-width="3"'
         ' stroke-dasharray="' + str(round(pct,1)) + ' ' + str(round(rem,1)) + '"'
-        ' stroke-linecap="round" style="filter:drop-shadow(0 0 6px ' + c + ')"/>'
+        ' stroke-linecap="round" style="filter:drop-shadow(0 0 8px ' + c + ')"/>'
         '</svg>'
         '<div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center">'
-        '<span style="font-size:1.55rem;font-weight:800;color:#F0F0FF;line-height:1;letter-spacing:-.04em">' + str(int(s)) + '</span>'
-        '<span style="font-size:.58rem;color:#3A3A60;font-weight:600;letter-spacing:.04em;margin-top:2px">/ 100</span>'
+        '<span style="font-size:1.6rem;font-weight:800;color:#F0F0FF;line-height:1;letter-spacing:-.04em">' + str(int(s)) + '</span>'
+        '<span style="font-size:.6rem;color:#7B7BAA;font-weight:600;letter-spacing:.05em;margin-top:2px">/ 100</span>'
         '</div></div>'
-        '<span style="font-size:.72rem;font-weight:700;background:' + bg + ';color:' + tc + ';padding:3px 12px;border-radius:20px;letter-spacing:.03em">' + lbl + '</span>'
+        '<span style="font-size:.72rem;font-weight:700;background:' + bg + ';color:' + tc + ';padding:4px 14px;border-radius:20px;letter-spacing:.04em">' + lbl + '</span>'
         '</div>'
     )
 
@@ -425,87 +606,99 @@ def score_bar(label, score, max_score, icon=""):
     return (
         '<div style="margin:14px 0">'
         '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px">'
-        '<span style="font-size:.855rem;font-weight:600;color:#C0C0E0">' + icon + ' ' + label + '</span>'
-        '<div style="display:flex;align-items:center;gap:6px">'
-        '<span style="font-size:.95rem;font-weight:800;color:' + color + ';letter-spacing:-.02em">' + str(round(score,1)) + '</span>'
-        '<span style="font-size:.75rem;color:#3A3A60;font-weight:500">/ ' + str(int(max_score)) + '</span>'
+        '<span style="font-size:.855rem;font-weight:600;color:#C8C8F0">' + icon + '  ' + label + '</span>'
+        '<div style="display:flex;align-items:baseline;gap:3px">'
+        '<span style="font-size:1rem;font-weight:800;color:' + color + ';letter-spacing:-.02em">' + str(round(score,1)) + '</span>'
+        '<span style="font-size:.72rem;color:#4A4A6A;font-weight:500">/ ' + str(int(max_score)) + '</span>'
         '</div></div>'
-        '<div style="background:rgba(255,255,255,.06);border-radius:999px;height:8px;overflow:hidden">'
-        '<div style="background:' + color + ';width:' + str(round(pct,1)) + '%;height:100%;border-radius:999px;box-shadow:0 0 8px ' + color + '55"></div>'
+        '<div style="background:rgba(255,255,255,.06);border-radius:999px;height:9px;overflow:hidden">'
+        '<div style="background:' + color + ';width:' + str(round(pct,1)) + '%;height:100%;border-radius:999px;'
+        'box-shadow:0 0 10px ' + color + '66;transition:width .6s ease"></div>'
         '</div></div>'
     )
 
 def issue_box(text):
-    return ('<div style="display:flex;gap:10px;align-items:flex-start;background:rgba(234,179,8,.08);'
-            'border:1px solid rgba(234,179,8,.25);border-radius:10px;padding:10px 14px;margin:5px 0;'
-            'font-size:.825rem;color:#FDE047;line-height:1.55">'
-            '<span style="flex-shrink:0">\u26a0\ufe0f</span>'
-            '<span style="color:#FDE047!important">' + text + '</span></div>')
+    return ('<div style="display:flex;gap:10px;align-items:flex-start;'
+            'background:rgba(234,179,8,.09);border:1px solid rgba(234,179,8,.28);'
+            'border-left:3px solid #EAB308;border-radius:0 10px 10px 0;'
+            'padding:11px 14px;margin:6px 0;font-size:.83rem;color:#FDE047;line-height:1.55">'
+            '<span style="flex-shrink:0;font-size:.9rem">\u26a0\ufe0f</span>'
+            '<span>' + text + '</span></div>')
 
 def ok_box(label):
-    return ('<div style="display:flex;gap:8px;align-items:center;background:rgba(34,197,94,.08);'
-            'border:1px solid rgba(34,197,94,.25);border-radius:10px;padding:9px 14px;margin:5px 0;'
-            'font-size:.825rem;color:#86EFAC;font-weight:500">\u2705 ' + label + ' \u2014 no issues found.</div>')
+    return ('<div style="display:flex;gap:9px;align-items:center;'
+            'background:rgba(34,197,94,.09);border:1px solid rgba(34,197,94,.28);'
+            'border-left:3px solid #22C55E;border-radius:0 10px 10px 0;'
+            'padding:11px 14px;margin:6px 0;font-size:.83rem;color:#86EFAC;font-weight:500">'
+            '\u2713  ' + label + ' \u2014 no issues found.</div>')
 
 def pill(text, t="found"):
     styles = {
-        "found":       "background:rgba(34,197,94,.12);color:#86EFAC;border:1px solid rgba(34,197,94,.3)",
-        "missing":     "background:rgba(239,68,68,.12);color:#FCA5A5;border:1px solid rgba(239,68,68,.3)",
-        "suggest":     "background:rgba(124,58,237,.15);color:#C4B5FD;border:1px solid rgba(124,58,237,.35)",
-        "title_miss":  "background:rgba(234,179,8,.1);color:#FDE047;border:1px solid rgba(234,179,8,.3)",
-        "bullet_miss": "background:rgba(249,115,22,.1);color:#FED7AA;border:1px solid rgba(249,115,22,.3)",
+        "found":       "background:rgba(34,197,94,.13);color:#86EFAC;border:1px solid rgba(34,197,94,.32)",
+        "missing":     "background:rgba(239,68,68,.13);color:#FCA5A5;border:1px solid rgba(239,68,68,.32)",
+        "suggest":     "background:rgba(124,58,237,.18);color:#C4B5FD;border:1px solid rgba(124,58,237,.38)",
+        "title_miss":  "background:rgba(234,179,8,.12);color:#FDE047;border:1px solid rgba(234,179,8,.32)",
+        "bullet_miss": "background:rgba(249,115,22,.12);color:#FED7AA;border:1px solid rgba(249,115,22,.32)",
     }
     icons = {"found":"\u2713","missing":"\u2717","suggest":"\u25B8","title_miss":"T","bullet_miss":"B"}
     s = styles.get(t, styles["found"]); i = icons.get(t,"")
     return ('<span style="' + s + ';display:inline-flex;align-items:center;gap:4px;border-radius:20px;'
-            'padding:3px 10px;margin:3px;font-size:.775rem;font-weight:600;line-height:1.4">' + i + ' ' + text + '</span>')
+            'padding:4px 11px;margin:3px;font-size:.775rem;font-weight:600;line-height:1.4">' + i + '  ' + text + '</span>')
 
 def section_label(text):
+    # FIXED: was #4A4A7A (2.24:1) — now #7B7BAA (4.6:1) ✅
     return ('<p style="font-size:.7rem;font-weight:700;text-transform:uppercase;'
-            'letter-spacing:.08em;color:#4A4A7A;margin:0 0 10px">' + text + '</p>')
+            'letter-spacing:.09em;color:#7B7BAA;margin:0 0 10px">' + text + '</p>')
 
 def copy_btn(text, uid):
     esc = text.replace("\\","\\\\").replace("'","\\'").replace("\n"," ")
     return ('<button onclick="navigator.clipboard.writeText(\'' + esc + '\');'
-            'this.innerText=\'\u2713 Copied\';setTimeout(()=>this.innerText=\'Copy\',2000)" '
-            'style="background:rgba(124,58,237,.2);border:1px solid rgba(124,58,237,.4);'
-            'border-radius:8px;padding:5px 14px;font-size:.775rem;font-weight:600;'
-            'color:#C4B5FD;cursor:pointer;margin-top:8px">Copy</button>')
+            'this.innerText=\'\u2713 Copied!\';setTimeout(()=>this.innerText=\'Copy\',2000)" '
+            'style="background:rgba(124,58,237,.18);border:1px solid rgba(124,58,237,.4);'
+            'border-radius:8px;padding:6px 16px;font-size:.775rem;font-weight:600;'
+            'color:#C4B5FD;cursor:pointer;margin-top:10px;transition:all .15s;'
+            'font-family:Inter,sans-serif">Copy</button>')
 
 def confidence_badge(conf, strategy):
-    if conf >= 85: c, bg = "#86EFAC", "rgba(34,197,94,.12)"
-    elif conf >= 75: c, bg = "#FDE047", "rgba(234,179,8,.12)"
-    else: c, bg = "#FED7AA", "rgba(249,115,22,.12)"
-    return ('<span style="background:' + bg + ';color:' + c + ';border-radius:6px;'
-            'padding:2px 8px;font-size:.72rem;font-weight:600;margin-left:8px">'
+    if conf >= 85: c, bg = "#86EFAC","rgba(34,197,94,.13)"
+    elif conf >= 75: c, bg = "#FDE047","rgba(234,179,8,.13)"
+    else: c, bg = "#FED7AA","rgba(249,115,22,.13)"
+    return ('<span style="background:' + bg + ';color:' + c + ';border-radius:8px;'
+            'padding:3px 9px;font-size:.72rem;font-weight:700;margin-left:8px;'
+            'border:1px solid ' + c + '44">'
             + str(conf) + '% \u00b7 ' + strategy + '</span>')
 
 def page_header(title, sub=""):
-    s = ('<p style="color:#4A4A7A;font-size:.9rem;margin:4px 0 0">' + sub + '</p>') if sub else ""
-    show('<div style="margin-bottom:28px;padding-bottom:22px;border-bottom:1px solid rgba(255,255,255,.06)">'
-         '<div style="display:flex;align-items:center;gap:12px;margin-bottom:4px">'
-         '<div style="width:3px;height:28px;background:linear-gradient(180deg,#7C3AED,#9D4EDD);border-radius:3px"></div>'
-         '<h1 style="font-size:1.65rem;font-weight:800;color:#F0F0FF;margin:0;letter-spacing:-.03em">' + title + '</h1>'
-         '</div>' + s + '</div>')
+    sub_html = ('<p style="color:#7B7BAA;font-size:.9rem;margin:5px 0 0;font-weight:400">' + sub + '</p>') if sub else ""
+    show('<div style="margin-bottom:30px;padding-bottom:24px;border-bottom:1px solid rgba(124,58,237,.15)">'
+         '<div style="display:flex;align-items:center;gap:14px;margin-bottom:4px">'
+         '<div style="width:4px;height:32px;background:linear-gradient(180deg,#7C3AED,#C4B5FD);'
+         'border-radius:4px;box-shadow:0 0 12px rgba(124,58,237,.5)"></div>'
+         '<h1 style="font-size:1.7rem;font-weight:800;color:#F0F0FF;margin:0;letter-spacing:-.035em">' + title + '</h1>'
+         '</div>' + sub_html + '</div>')
 
 def empty_state(icon, title, subtitle):
-    show('<div style="background:#13131F;border-radius:20px;padding:48px 24px;border:1px solid rgba(255,255,255,.07);text-align:center">'
-         '<div style="font-size:2.8rem;margin-bottom:16px">' + icon + '</div>'
-         '<p style="font-size:1rem;font-weight:700;color:#C0C0E8;margin:0 0 8px">' + title + '</p>'
-         '<p style="font-size:.875rem;color:#4A4A7A;margin:0">' + subtitle + '</p></div>')
+    show('<div style="background:#10101E;border-radius:20px;padding:56px 24px;'
+         'border:1px solid rgba(124,58,237,.15);text-align:center;margin:20px 0">'
+         '<div style="font-size:3rem;margin-bottom:18px">' + icon + '</div>'
+         '<p style="font-size:1.05rem;font-weight:700;color:#C8C8F0;margin:0 0 10px">' + title + '</p>'
+         '<p style="font-size:.875rem;color:#7B7BAA;margin:0">' + subtitle + '</p></div>')
 
 # ── SIDEBAR ─────────────────────────────────────────────────────────────────────
 with st.sidebar:
-    show('<div style="padding:8px 4px 20px">'
-         '<div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">'
-         '<div style="width:32px;height:32px;background:linear-gradient(135deg,#7C3AED,#9D4EDD);'
-         'border-radius:9px;display:flex;align-items:center;justify-content:center;'
-         'font-size:.9rem;box-shadow:0 4px 12px rgba(124,58,237,.4)">\U0001f6d2</div>'
-         '<div><div style="font-size:.9rem;font-weight:800;color:#E0E0FF;letter-spacing:-.01em">Amazon Analyser</div>'
-         '<div style="font-size:.68rem;color:#4A4A7A;margin-top:1px">Content \u00b7 SEO \u00b7 UK</div>'
-         '</div></div></div>')
+    show('<div style="padding:10px 6px 22px">'
+         '<div style="display:flex;align-items:center;gap:12px;margin-bottom:4px">'
+         '<div style="width:36px;height:36px;background:linear-gradient(135deg,#6D28D9,#8B5CF6);'
+         'border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1rem;'
+         'box-shadow:0 4px 16px rgba(109,40,217,.45)">\U0001f6d2</div>'
+         '<div>'
+         '<div style="font-size:.95rem;font-weight:800;color:#EDE9FE;letter-spacing:-.02em">Amazon</div>'
+         '<div style="font-size:.95rem;font-weight:800;color:#8B5CF6;letter-spacing:-.02em">Analyser</div>'
+         '</div></div>'
+         '<p style="font-size:.68rem;color:#5A5A80;margin:8px 0 0;letter-spacing:.04em">CONTENT \u00b7 SEO \u00b7 UK</p>'
+         '</div>')
     st.markdown("---")
-    page = st.radio("nav", [
+    page = st.radio("Navigation", [
         "\U0001f3e0  Dashboard",
         "\U0001f50d  New Analysis",
         "\U0001f4dc  History",
@@ -513,17 +706,21 @@ with st.sidebar:
         "\u2699\ufe0f  Scoring Rules",
     ], label_visibility="collapsed")
     st.markdown("---")
-    show('<div style="padding:0 4px">' + section_label("Score Legend") +
-         "<div style='display:flex;flex-direction:column;gap:6px'>" +
+    show('<div style="padding:0 6px">'
+         + section_label("Score guide") +
+         "<div style='display:flex;flex-direction:column;gap:7px'>" +
          "".join(
-             '<div style="display:flex;align-items:center;gap:8px;font-size:.8rem">'
-             '<div style="width:8px;height:8px;border-radius:50%;background:' + c + ';box-shadow:0 0 6px ' + c + '"></div>'
-             '<span style="color:#5050A0">' + lbl + ' ' + rng + '</span></div>'
+             '<div style="display:flex;align-items:center;gap:10px">'
+             '<div style="width:9px;height:9px;border-radius:50%;background:' + c + ';'
+             'box-shadow:0 0 7px ' + c + ';flex-shrink:0"></div>'
+             '<span style="font-size:.82rem;color:#A0A0D0;font-weight:500">' + lbl + '</span>'
+             '<span style="font-size:.78rem;color:#5A5A80;margin-left:auto">' + rng + '</span>'
+             '</div>'
              for c, lbl, rng in [
                  ("#22C55E","Excellent","\u226585"),
                  ("#EAB308","Good","65\u201384"),
                  ("#F97316","Needs Work","40\u201364"),
-                 ("#EF4444","Poor","< 40"),
+                 ("#EF4444","Poor","<40"),
              ]
          ) + '</div></div>')
 
@@ -538,8 +735,9 @@ def render_result(asin, title, bullets_json, has_aplus, image,
     t_miss, b_miss = keyword_gaps(title, bullets, pl_keywords)
     rewrites = bullet_rewrite_suggestions(bullets, b_miss) if bullets else []
     c_, bg_, tc_, lbl_ = _score_meta(s)
-    img_h = ('<img src="' + (image or "") + '" style="width:72px;height:72px;object-fit:contain;'
-             'border-radius:10px;border:1px solid rgba(255,255,255,.08);margin-bottom:12px">') if image else ""
+    img_h = ('<img src="' + (image or "") + '" style="width:76px;height:76px;object-fit:contain;'
+             'border-radius:12px;border:1px solid rgba(124,58,237,.2);margin-bottom:14px;'
+             'background:#0F0F20">') if image else ""
     bars = (score_bar("Title",        t_s, rule_w.get("title_weight",25),   "\U0001f4dd") +
             score_bar("Bullet Points",b_s, rule_w.get("bullets_weight",25), "\U0001f539") +
             score_bar("A+ Content",   a_s, rule_w.get("aplus_weight",25),   "\u2728")    +
@@ -547,261 +745,401 @@ def render_result(asin, title, bullets_json, has_aplus, image,
     all_issues = t_issues + b_issues + a_issues + k_issues
     issues_html = "".join(issue_box(i) for i in all_issues) if all_issues else ok_box("All sections")
     header = (
-        '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:20px;margin-bottom:24px;flex-wrap:wrap">'
+        '<div style="display:flex;justify-content:space-between;align-items:flex-start;'
+        'gap:24px;margin-bottom:26px;flex-wrap:wrap">'
         '<div style="flex:1;min-width:220px">' + img_h +
-        '<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap">'
-        '<code style="background:rgba(124,58,237,.2);color:#C4B5FD;padding:4px 12px;border-radius:8px;font-size:.85rem;font-weight:700;letter-spacing:.04em">' + asin + '</code>'
-        '<span style="background:' + bg_ + ';color:' + tc_ + ';padding:3px 12px;border-radius:20px;font-size:.75rem;font-weight:700">' + lbl_ + '</span>'
-        '<a href="https://www.amazon.co.uk/dp/' + asin + '" target="_blank" style="font-size:.775rem;color:#4A4A7A;text-decoration:none">\U0001f517 Amazon</a>'
+        '<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap">'
+        '<code style="background:rgba(124,58,237,.22);color:#C4B5FD;padding:5px 13px;'
+        'border-radius:8px;font-size:.85rem;font-weight:700;letter-spacing:.05em">' + asin + '</code>'
+        '<span style="background:' + bg_ + ';color:' + tc_ + ';padding:4px 13px;border-radius:20px;'
+        'font-size:.75rem;font-weight:700;letter-spacing:.03em">' + lbl_ + '</span>'
+        '<a href="https://www.amazon.co.uk/dp/' + asin + '" target="_blank" '
+        'style="font-size:.78rem;color:#7B7BAA;text-decoration:none;'
+        'padding:4px 10px;border:1px solid rgba(255,255,255,.1);border-radius:8px;'
+        'transition:all .15s">\U0001f517 View on Amazon</a>'
         '</div>'
-        '<p style="color:#7070A0;font-size:.875rem;margin:0;line-height:1.6">' + (title or "\u2014")[:130] + '</p>'
+        '<p style="color:#A0A0D0;font-size:.88rem;margin:0;line-height:1.65;'
+        'border-left:2px solid rgba(124,58,237,.3);padding-left:12px">'
+        + (title or "\u2014")[:140] + '</p>'
         '</div>' + score_gauge(s) + '</div>'
     )
-    show('<div style="background:#13131F;border-radius:22px;padding:28px 30px;'
-         'border:1px solid rgba(124,58,237,.2);margin:18px 0;box-shadow:0 0 40px rgba(124,58,237,.06)">'
+    show('<div style="background:#10101E;border-radius:22px;padding:28px 32px;'
+         'border:1px solid rgba(124,58,237,.18);margin:20px 0;'
+         'box-shadow:0 8px 40px rgba(0,0,0,.4),0 0 0 1px rgba(124,58,237,.06)">'
          + header +
-         '<div style="border-top:1px solid rgba(255,255,255,.05);padding-top:18px">' + bars + '</div>'
-         '<div style="margin-top:14px">' + issues_html + '</div>')
+         '<div style="border-top:1px solid rgba(255,255,255,.05);padding-top:20px;margin-top:4px">'
+         + bars + '</div>'
+         '<div style="margin-top:16px">' + issues_html + '</div>')
     if pl_keywords:
-        show(section_label("Keyword gaps by section"))
-        ghtml = ('<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">'
-                 '<div style="background:rgba(234,179,8,.06);border:1px solid rgba(234,179,8,.2);border-radius:12px;padding:14px 16px">'
-                 '<p style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#EAB308;margin:0 0 8px">\U0001f4dd Missing from Title</p>')
+        show('<div style="margin-top:20px">' + section_label("Keyword gaps by section"))
+        ghtml = ('<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px">'
+                 '<div style="background:rgba(234,179,8,.07);border:1px solid rgba(234,179,8,.22);'
+                 'border-radius:14px;padding:16px 18px">'
+                 '<p style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;'
+                 'color:#EAB308;margin:0 0 10px">\U0001f4dd Missing from Title</p>')
         ghtml += ("".join(pill(k,"title_miss") for k in t_miss) if t_miss
-                  else '<span style="font-size:.8rem;color:#22C55E;font-weight:500">\u2713 All present</span>')
-        ghtml += ('</div><div style="background:rgba(249,115,22,.06);border:1px solid rgba(249,115,22,.2);border-radius:12px;padding:14px 16px">'
-                  '<p style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#F97316;margin:0 0 8px">\U0001f539 Missing from Bullets</p>')
+                  else '<span style="font-size:.82rem;color:#22C55E;font-weight:600">\u2713 All keywords present</span>')
+        ghtml += ('</div>'
+                  '<div style="background:rgba(249,115,22,.07);border:1px solid rgba(249,115,22,.22);'
+                  'border-radius:14px;padding:16px 18px">'
+                  '<p style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;'
+                  'color:#F97316;margin:0 0 10px">\U0001f539 Missing from Bullet Points</p>')
         ghtml += ("".join(pill(k,"bullet_miss") for k in b_miss) if b_miss
-                  else '<span style="font-size:.8rem;color:#22C55E;font-weight:500">\u2713 All present</span>')
+                  else '<span style="font-size:.82rem;color:#22C55E;font-weight:600">\u2713 All keywords present</span>')
         ghtml += '</div></div>'
-        show(ghtml)
+        show(ghtml + '</div>')
     if found_kws or miss_kws:
-        show('<div style="margin-top:4px">' + section_label("Full keyword coverage"))
+        show('<div style="margin-top:16px">' + section_label("Full keyword coverage"))
         show("".join(pill(k,"found") for k in found_kws) + "".join(pill(k,"missing") for k in miss_kws) +
-             '<p style="font-size:.72rem;color:#3A3A60;margin:6px 0 0">\u2713 found \u00b7 \u2717 missing</p></div>')
+             '<p style="font-size:.72rem;color:#5A5A80;margin:8px 0 0">'
+             '\u2713 found in listing \u00b7 \u2717 not found anywhere</p></div>')
     if rewrites:
-        show('<div style="margin-top:20px;border-top:1px solid rgba(255,255,255,.05);padding-top:18px">'
-             + section_label("\U0001f4a1 Smart rewrite suggestions"))
+        show('<div style="margin-top:22px;border-top:1px solid rgba(255,255,255,.05);padding-top:20px">'
+             + section_label("\U0001f4a1 Smart rewrite suggestions — add missing keywords to bullet points"))
         for rw in rewrites:
             uid = re.sub(r"\W","_", asin + "_" + rw["keyword"])
-            show('<div style="background:rgba(124,58,237,.06);border:1px solid rgba(124,58,237,.15);'
-                 'border-radius:14px;padding:16px 20px;margin-bottom:12px">'
-                 '<p style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#4A4A7A;margin:0 0 10px">'
-                 'Keyword: <span style="color:#C4B5FD">' + rw["keyword"] + '</span>'
-                 ' \u2192 Bullet ' + str(rw["bullet_idx"]+1) + ' \u00b7 Type: ' + rw["bullet_type"]
-                 + confidence_badge(rw["confidence"], rw["strategy"]) + '</p>'
-                 '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">'
-                 '<div><p style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#3A3A60;margin:0 0 6px">Original</p>'
-                 '<p style="font-size:.84rem;color:#5050A0;line-height:1.55;margin:0;font-style:italic;padding:10px 12px;background:rgba(255,255,255,.03);border-radius:8px;border:1px solid rgba(255,255,255,.06)">' + rw["original"] + '</p></div>'
-                 '<div><p style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#86EFAC;margin:0 0 6px">Suggested Rewrite</p>'
-                 '<p style="font-size:.84rem;color:#E0E0FF;line-height:1.55;margin:0;padding:10px 12px;background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.2);border-radius:8px">' + rw["suggested"] + '</p>'
-                 + copy_btn(rw["suggested"], uid) + '</div></div></div>')
+            show('<div style="background:#0F0F20;border:1px solid rgba(124,58,237,.18);'
+                 'border-radius:14px;padding:18px 22px;margin-bottom:14px">'
+                 '<div style="display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-bottom:14px">'
+                 '<span style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#7B7BAA">Keyword</span>'
+                 '<span style="background:rgba(124,58,237,.2);color:#C4B5FD;border-radius:8px;'
+                 'padding:3px 10px;font-size:.82rem;font-weight:700">' + rw["keyword"] + '</span>'
+                 '<span style="color:#5A5A80;font-size:.8rem">\u2192 Bullet ' + str(rw["bullet_idx"]+1) + '</span>'
+                 '<span style="background:rgba(255,255,255,.05);color:#7B7BAA;border-radius:6px;'
+                 'padding:2px 8px;font-size:.72rem;border:1px solid rgba(255,255,255,.08)">type: ' + rw["bullet_type"] + '</span>'
+                 + confidence_badge(rw["confidence"], rw["strategy"]) + '</div>'
+                 '<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">'
+                 '<div>'
+                 '<p style="font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;'
+                 'color:#5A5A80;margin:0 0 8px">Original Bullet</p>'
+                 # FIXED: was #5050A0 (2.76:1) — now #8888C0 (5.55:1) ✅
+                 '<p style="font-size:.84rem;color:#8888C0;line-height:1.6;margin:0;font-style:italic;'
+                 'padding:12px 14px;background:rgba(255,255,255,.03);border-radius:10px;'
+                 'border:1px solid rgba(255,255,255,.07)">' + rw["original"] + '</p>'
+                 '</div>'
+                 '<div>'
+                 '<p style="font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;'
+                 'color:#22C55E;margin:0 0 8px">Suggested Rewrite</p>'
+                 '<p style="font-size:.84rem;color:#E8E8FF;line-height:1.6;margin:0;'
+                 'padding:12px 14px;background:rgba(34,197,94,.07);'
+                 'border:1px solid rgba(34,197,94,.22);border-radius:10px">' + rw["suggested"] + '</p>'
+                 + copy_btn(rw["suggested"], uid) +
+                 '</div></div></div>')
         show('</div>')
     if sugg_kws:
-        show('<div style="margin-top:14px">' + section_label("Suggested keywords from page"))
+        show('<div style="margin-top:16px">' + section_label("Suggested keywords from page content"))
         show("".join(pill(k,"suggest") for k in sugg_kws) + '</div>')
     show('</div>')
 
 # ── DASHBOARD ──────────────────────────────────────────────────────────────────
 if page == "\U0001f3e0  Dashboard":
-    page_header("Dashboard", "Amazon listing health at a glance")
+    page_header("Dashboard", "Your Amazon listing health at a glance")
     conn = db()
     rows   = conn.execute("SELECT * FROM results ORDER BY created_at DESC LIMIT 200").fetchall()
     plines = conn.execute("SELECT COUNT(*) FROM product_lines").fetchone()[0]
     conn.close()
-    total_a = len(rows); avg_s = round(sum(r["total_score"] or 0 for r in rows)/max(total_a,1),1)
-    poor = sum(1 for r in rows if (r["total_score"] or 0) < 65)
+    total_a = len(rows)
+    avg_s   = round(sum(r["total_score"] or 0 for r in rows) / max(total_a,1), 1)
+    poor    = sum(1 for r in rows if (r["total_score"] or 0) < 65)
+    excellent = sum(1 for r in rows if (r["total_score"] or 0) >= 85)
     if total_a == 0:
-        empty_state("\U0001f4e6","No analyses yet","Create a Product Line, then run your first analysis.")
+        empty_state("\U0001f4e6","No analyses yet","Create a Product Line and run your first analysis to see your dashboard.")
     else:
         c1,c2,c3,c4 = st.columns(4)
-        c1.metric("Total Analyses", total_a); c2.metric("Average Score", str(avg_s)+"/100")
-        c3.metric("Need Attention", poor);    c4.metric("Product Lines", plines)
-        show('<div style="height:20px"></div>')
-        show('<h2 style="font-size:1rem;font-weight:700;color:#C0C0E0;margin:0 0 14px">Recent Analyses</h2>')
-        tbl = ('<div style="background:#13131F;border-radius:18px;border:1px solid rgba(255,255,255,.07);overflow:hidden">'
+        c1.metric("Total Analyses", total_a)
+        c2.metric("Average Score", str(avg_s) + " / 100")
+        c3.metric("Need Attention", poor, delta=(str(-poor) + " listings below 65") if poor else "All good \u2713")
+        c4.metric("Product Lines", plines)
+        show('<div style="height:24px"></div>')
+        show('<h2 style="font-size:1.05rem;font-weight:700;color:#C8C8F0;margin:0 0 14px;letter-spacing:-.01em">Recent Analyses</h2>')
+        tbl = ('<div style="background:#10101E;border-radius:20px;border:1px solid rgba(124,58,237,.15);overflow:hidden">'
                '<table style="width:100%;border-collapse:collapse;font-size:.84rem">'
-               '<thead><tr style="background:rgba(124,58,237,.1);border-bottom:1px solid rgba(255,255,255,.06)">')
+               '<thead><tr style="background:rgba(124,58,237,.1)">')
         for h in ["ASIN","Product","Score","Title","Bullets","A+","Keywords","Date"]:
-            tbl += '<th style="padding:11px 14px;text-align:left;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#4A4A7A;white-space:nowrap">' + h + '</th>'
+            tbl += ('<th style="padding:12px 16px;text-align:left;font-size:.68rem;font-weight:700;'
+                    'text-transform:uppercase;letter-spacing:.09em;color:#7B7BAA;white-space:nowrap;'
+                    'border-bottom:1px solid rgba(124,58,237,.15)">' + h + '</th>')
         tbl += '</tr></thead><tbody>'
         for r in rows[:15]:
             s = r["total_score"]; c_,bg_,tc_,lbl_ = _score_meta(s)
-            sc = ('<span style="background:'+bg_+';color:'+tc_+';padding:3px 10px;border-radius:20px;font-size:.75rem;font-weight:700">'+str(int(s))+' \u2014 '+lbl_+'</span>') if s is not None else '<span style="color:#4A4A7A">Error</span>'
-            ap = ('<span style="color:#22C55E;font-weight:600">Yes</span>' if r["has_aplus"] else '<span style="color:#EF4444;font-weight:600">No</span>')
+            sc = ('<span style="background:' + bg_ + ';color:' + tc_ + ';padding:3px 11px;border-radius:20px;'
+                  'font-size:.75rem;font-weight:700">' + str(int(s)) + ' \u2014 ' + lbl_ + '</span>') if s is not None else '<span style="color:#5A5A80">Error</span>'
+            ap = ('<span style="color:#22C55E;font-weight:700;font-size:.82rem">\u2713 Yes</span>'
+                  if r["has_aplus"] else '<span style="color:#EF4444;font-weight:700;font-size:.82rem">\u2717 No</span>')
             fv = lambda v: str(int(v)) if v else "\u2014"
-            tbl += ('<tr style="border-bottom:1px solid rgba(255,255,255,.04)">'
-                    '<td style="padding:11px 14px"><code>'+r["asin"]+'</code></td>'
-                    '<td style="padding:11px 14px;color:#5050A0;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+(r["product_name"] or "\u2014")[:40]+'</td>'
-                    '<td style="padding:11px 14px">'+sc+'</td>'
-                    '<td style="padding:11px 14px;color:#4A4A7A">'+fv(r["title_score"])+'</td>'
-                    '<td style="padding:11px 14px;color:#4A4A7A">'+fv(r["bullets_score"])+'</td>'
-                    '<td style="padding:11px 14px">'+ap+'</td>'
-                    '<td style="padding:11px 14px;color:#4A4A7A">'+fv(r["keywords_score"])+'</td>'
-                    '<td style="padding:11px 14px;color:#3A3A60;font-size:.78rem">'+str(r["created_at"] or "")[:10]+'</td>'
+            tbl += ('<tr style="border-bottom:1px solid rgba(255,255,255,.04);transition:background .1s">'
+                    '<td style="padding:12px 16px"><code>' + r["asin"] + '</code></td>'
+                    # FIXED: was #5050A0 (2.63:1) — now #8888C0 ✅
+                    '<td style="padding:12px 16px;color:#8888C0;max-width:170px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'
+                    + (r["product_name"] or "\u2014")[:45] + '</td>'
+                    '<td style="padding:12px 16px">' + sc + '</td>'
+                    '<td style="padding:12px 16px;color:#9090C0">' + fv(r["title_score"]) + '</td>'
+                    '<td style="padding:12px 16px;color:#9090C0">' + fv(r["bullets_score"]) + '</td>'
+                    '<td style="padding:12px 16px">' + ap + '</td>'
+                    '<td style="padding:12px 16px;color:#9090C0">' + fv(r["keywords_score"]) + '</td>'
+                    '<td style="padding:12px 16px;color:#5A5A80;font-size:.78rem">' + str(r["created_at"] or "")[:10] + '</td>'
                     '</tr>')
         tbl += '</tbody></table></div>'
         show(tbl)
 
 # ── NEW ANALYSIS ───────────────────────────────────────────────────────────────
 elif page == "\U0001f50d  New Analysis":
-    page_header("New Analysis","Scrape and score Amazon.co.uk listings")
+    page_header("New Analysis", "Scrape and score Amazon.co.uk listings in seconds")
     conn = db()
     lines = conn.execute("SELECT * FROM product_lines ORDER BY name").fetchall()
-    rules = conn.execute("SELECT * FROM scoring_rules ORDER BY is_default DESC,name").fetchall()
+    rules = conn.execute("SELECT * FROM scoring_rules ORDER BY is_default DESC, name").fetchall()
     conn.close()
     if not lines:
-        empty_state("\U0001f3f7\ufe0f","No product lines yet","Go to Product Lines to create one with your target keywords."); st.stop()
-    col_a,col_b,col_c = st.columns([2,1,1], gap="large")
+        empty_state("\U0001f3f7\ufe0f","No product lines yet",
+                    "Go to Product Lines \u2192 create one with your target keywords \u2192 come back here.")
+        st.stop()
+    show('<div style="background:#10101E;border-radius:18px;padding:24px 28px;'
+         'border:1px solid rgba(124,58,237,.18);margin-bottom:20px">')
+    col_a, col_b, col_c = st.columns([2,1,1], gap="large")
     with col_a:
-        show(section_label("ASINs (one per line)"))
-        asins_raw = st.text_area("","", placeholder="B08N5WRWNW\nB09XYZ1234", height=120, label_visibility="collapsed")
+        show(section_label("ASINs \u2014 one per line"))
+        asins_raw = st.text_area("asins","", placeholder="B08N5WRWNW\nB09XYZ1234\nB07ABCDEF1",
+                                  height=130, label_visibility="collapsed")
     with col_b:
         show(section_label("Product Line"))
-        line_names = [l["name"]+" ("+str(len(json.loads(l["keywords"])))+" kws)" for l in lines]
-        sel_line = st.selectbox("",line_names,label_visibility="collapsed")
+        line_names = [l["name"] + "  (" + str(len(json.loads(l["keywords"]))) + " kws)" for l in lines]
+        sel_line = st.selectbox("line","" , options=line_names, label_visibility="collapsed")
     with col_c:
         show(section_label("Scoring Rule"))
-        rule_names = [r["name"]+(" (Default)" if r["is_default"] else "") for r in rules]
-        sel_rule = st.selectbox(" ",rule_names,label_visibility="collapsed")
-    show('<div style="height:8px"></div>')
+        rule_names = [r["name"] + (" \u2605" if r["is_default"] else "") for r in rules]
+        sel_rule = st.selectbox("rule","", options=rule_names, label_visibility="collapsed")
+    show('</div>')
     if st.button("\u25b6\ufe0f  Run Analysis", type="primary", use_container_width=True):
         asins = [a.strip().upper() for a in asins_raw.strip().splitlines() if a.strip()]
         if not asins: st.error("Please enter at least one ASIN."); st.stop()
-        line_obj=lines[line_names.index(sel_line)]; rule_obj=rules[rule_names.index(sel_rule)]
-        keywords=json.loads(line_obj["keywords"]); rule_dict=dict(rule_obj)
-        bar = st.progress(0, text="Starting\u2026")
+        line_obj  = lines[line_names.index(sel_line)]
+        rule_obj  = rules[rule_names.index(sel_rule)]
+        keywords  = json.loads(line_obj["keywords"])
+        rule_dict = dict(rule_obj)
+        bar = st.progress(0, text="Initialising\u2026")
         for idx, asin in enumerate(asins):
-            bar.progress(idx/max(len(asins),1), text="Scraping "+asin+"\u2026 ("+str(idx+1)+"/"+str(len(asins))+")")
+            bar.progress(idx / max(len(asins),1),
+                         text="\U0001f50d Scraping " + asin + " (" + str(idx+1) + "/" + str(len(asins)) + ")\u2026")
             conn = db()
             try:
-                scraped=scrape(asin); result=analyse(scraped,keywords,rule_dict)
-                pname=scraped.get("brand") or (scraped.get("title") or "")[:60] or asin
-                conn.execute("INSERT INTO results (asin,product_line_id,scoring_rule_id,product_name,product_image,title,bullets,has_aplus,description,total_score,title_score,bullets_score,aplus_score,keywords_score,title_issues,bullets_issues,aplus_issues,keywords_issues,found_keywords,missing_keywords,suggested_keywords) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
-                    (asin,line_obj["id"],rule_obj["id"],pname,scraped.get("image_url"),scraped.get("title"),json.dumps(scraped.get("bullets",[])),1 if scraped.get("has_aplus") else 0,scraped.get("description"),result["total_score"],result["title_score"],result["bullets_score"],result["aplus_score"],result["keywords_score"],json.dumps(result["title_issues"]),json.dumps(result["bullets_issues"]),json.dumps(result["aplus_issues"]),json.dumps(result["keywords_issues"]),json.dumps(result["found_keywords"]),json.dumps(result["missing_keywords"]),json.dumps(result["suggested_keywords"])))
+                scraped  = scrape(asin)
+                result   = analyse(scraped, keywords, rule_dict)
+                pname    = scraped.get("brand") or (scraped.get("title") or "")[:60] or asin
+                conn.execute(
+                    "INSERT INTO results (asin,product_line_id,scoring_rule_id,product_name,product_image,"
+                    "title,bullets,has_aplus,description,total_score,title_score,bullets_score,aplus_score,"
+                    "keywords_score,title_issues,bullets_issues,aplus_issues,keywords_issues,"
+                    "found_keywords,missing_keywords,suggested_keywords) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                    (asin,line_obj["id"],rule_obj["id"],pname,scraped.get("image_url"),
+                     scraped.get("title"),json.dumps(scraped.get("bullets",[])),
+                     1 if scraped.get("has_aplus") else 0,scraped.get("description"),
+                     result["total_score"],result["title_score"],result["bullets_score"],
+                     result["aplus_score"],result["keywords_score"],
+                     json.dumps(result["title_issues"]),json.dumps(result["bullets_issues"]),
+                     json.dumps(result["aplus_issues"]),json.dumps(result["keywords_issues"]),
+                     json.dumps(result["found_keywords"]),json.dumps(result["missing_keywords"]),
+                     json.dumps(result["suggested_keywords"])))
                 conn.commit()
-                render_result(asin,scraped.get("title"),json.dumps(scraped.get("bullets",[])),
-                              scraped.get("has_aplus"),scraped.get("image_url"),
-                              result["total_score"],result["title_score"],result["bullets_score"],
-                              result["aplus_score"],result["keywords_score"],
-                              result["title_issues"],result["bullets_issues"],
-                              result["aplus_issues"],result["keywords_issues"],
-                              result["found_keywords"],result["missing_keywords"],result["suggested_keywords"],
-                              rule_dict,keywords)
+                render_result(asin, scraped.get("title"), json.dumps(scraped.get("bullets",[])),
+                              scraped.get("has_aplus"), scraped.get("image_url"),
+                              result["total_score"], result["title_score"], result["bullets_score"],
+                              result["aplus_score"], result["keywords_score"],
+                              result["title_issues"], result["bullets_issues"],
+                              result["aplus_issues"], result["keywords_issues"],
+                              result["found_keywords"], result["missing_keywords"], result["suggested_keywords"],
+                              rule_dict, keywords)
             except Exception as e:
-                conn.execute("INSERT INTO results (asin,product_line_id,scoring_rule_id,scrape_error,total_score) VALUES (?,?,?,?,0)", (asin,line_obj["id"],rule_obj["id"],str(e)))
-                conn.commit(); st.error("**"+asin+"** \u2014 "+str(e))
+                conn.execute("INSERT INTO results (asin,product_line_id,scoring_rule_id,scrape_error,total_score) VALUES (?,?,?,?,0)",
+                             (asin, line_obj["id"], rule_obj["id"], str(e)))
+                conn.commit()
+                show('<div style="background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);'
+                     'border-left:3px solid #EF4444;border-radius:0 10px 10px 0;padding:12px 16px;margin:8px 0">'
+                     '<span style="color:#FCA5A5;font-weight:600">' + asin + '</span>'
+                     '<span style="color:#7B7BAA;font-size:.85rem"> \u2014 ' + str(e) + '</span></div>')
             finally:
                 conn.close()
-        bar.progress(1.0, text="\u2713 Done!")
+        bar.progress(1.0, text="\u2713 Analysis complete!")
 
 # ── HISTORY ────────────────────────────────────────────────────────────────────
 elif page == "\U0001f4dc  History":
-    page_header("History","All past analyses")
+    page_header("History", "All past analyses with full details")
     conn = db()
-    rows = conn.execute("SELECT r.*,pl.keywords as pl_keywords FROM results r LEFT JOIN product_lines pl ON r.product_line_id=pl.id ORDER BY r.created_at DESC").fetchall()
+    rows = conn.execute(
+        "SELECT r.*, pl.keywords as pl_keywords FROM results r "
+        "LEFT JOIN product_lines pl ON r.product_line_id=pl.id ORDER BY r.created_at DESC").fetchall()
     rules_map = {r["id"]: dict(r) for r in conn.execute("SELECT * FROM scoring_rules").fetchall()}
     conn.close()
     if not rows:
-        empty_state("\U0001f4dc","No history yet","Run your first analysis and results will appear here.")
+        empty_state("\U0001f4dc","No history yet","Run your first analysis and all results will appear here.")
     else:
-        hc1,hc2 = st.columns([3,1])
-        hc1.caption(str(len(rows))+" result"+("s" if len(rows)!=1 else ""))
+        hc1, hc2 = st.columns([3,1])
+        hc1.caption(str(len(rows)) + " result" + ("s" if len(rows)!=1 else "") + " stored")
         xl = build_excel(rows)
-        hc2.download_button("\u2193  Export Excel",data=xl,file_name="amazon_analysis.xlsx",
-                            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",use_container_width=True)
-        show('<div style="height:10px"></div>')
+        hc2.download_button("\u2193  Export to Excel", data=xl,
+                            file_name="amazon_analysis.xlsx",
+                            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                            use_container_width=True)
+        show('<div style="height:12px"></div>')
         for r in rows:
-            s=r["total_score"]; c_,bg_,tc_,lbl_=_score_meta(s)
-            exp_label = (r["asin"]+"  ["+str(int(s))+"/100 "+lbl_+"]" if s is not None else r["asin"]+"  [Error]")+"  \u00b7  "+(r["product_name"] or "\u2014")[:35]+"  \u00b7  "+str(r["created_at"] or "")[:10]
+            s = r["total_score"]; c_,bg_,tc_,lbl_ = _score_meta(s)
+            score_str = str(int(s)) + "/100  " + lbl_ if s is not None else "Error"
+            exp_label = (r["asin"] + "  \u2014  " + score_str + "  \u00b7  "
+                         + (r["product_name"] or "\u2014")[:38]
+                         + "  \u00b7  " + str(r["created_at"] or "")[:10])
             with st.expander(exp_label):
                 if r["scrape_error"]:
-                    st.error("Scraping failed: "+r["scrape_error"])
-                    c2=db()
-                    if st.button("Delete",key="del_"+str(r["id"])): c2.execute("DELETE FROM results WHERE id=?",(r["id"],)); c2.commit(); st.rerun()
+                    show('<div style="background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);'
+                         'border-radius:10px;padding:12px 16px;margin-bottom:12px">'
+                         '<p style="color:#FCA5A5;font-weight:600;margin:0 0 4px">Scraping failed</p>'
+                         '<p style="color:#7B7BAA;font-size:.85rem;margin:0">' + r["scrape_error"] + '</p></div>')
+                    c2 = db()
+                    if st.button("\U0001f5d1  Delete", key="del_" + str(r["id"])):
+                        c2.execute("DELETE FROM results WHERE id=?", (r["id"],)); c2.commit(); st.rerun()
                     c2.close(); continue
-                pl_kws=json.loads(r["pl_keywords"] or "[]") if "pl_keywords" in r.keys() else []
-                rule_w=rules_map.get(r["scoring_rule_id"],{"title_weight":25,"bullets_weight":25,"aplus_weight":25,"keywords_weight":25})
-                render_result(r["asin"],r["title"],r["bullets"],r["has_aplus"],r["product_image"],
-                              r["total_score"],r["title_score"],r["bullets_score"],r["aplus_score"],r["keywords_score"],
-                              json.loads(r["title_issues"] or "[]"),json.loads(r["bullets_issues"] or "[]"),
-                              json.loads(r["aplus_issues"] or "[]"),json.loads(r["keywords_issues"] or "[]"),
-                              json.loads(r["found_keywords"] or "[]"),json.loads(r["missing_keywords"] or "[]"),
-                              json.loads(r["suggested_keywords"] or "[]"),rule_w,pl_kws)
-                c2=db()
-                if st.button("\U0001f5d1 Delete result",key="del2_"+str(r["id"])): c2.execute("DELETE FROM results WHERE id=?",(r["id"],)); c2.commit(); st.rerun()
+                pl_kws  = json.loads(r["pl_keywords"] or "[]") if "pl_keywords" in r.keys() else []
+                rule_w  = rules_map.get(r["scoring_rule_id"],
+                                        {"title_weight":25,"bullets_weight":25,"aplus_weight":25,"keywords_weight":25})
+                render_result(r["asin"], r["title"], r["bullets"], r["has_aplus"], r["product_image"],
+                              r["total_score"], r["title_score"], r["bullets_score"],
+                              r["aplus_score"], r["keywords_score"],
+                              json.loads(r["title_issues"] or "[]"), json.loads(r["bullets_issues"] or "[]"),
+                              json.loads(r["aplus_issues"] or "[]"), json.loads(r["keywords_issues"] or "[]"),
+                              json.loads(r["found_keywords"] or "[]"), json.loads(r["missing_keywords"] or "[]"),
+                              json.loads(r["suggested_keywords"] or "[]"), rule_w, pl_kws)
+                c2 = db()
+                if st.button("\U0001f5d1  Delete result", key="del2_" + str(r["id"])):
+                    c2.execute("DELETE FROM results WHERE id=?", (r["id"],)); c2.commit(); st.rerun()
                 c2.close()
 
 # ── PRODUCT LINES ──────────────────────────────────────────────────────────────
 elif page == "\U0001f3f7  Product Lines":
-    page_header("Product Lines","Manage keyword groups for each product category")
-    conn=db(); lines=conn.execute("SELECT * FROM product_lines ORDER BY name").fetchall()
+    page_header("Product Lines","Group products and assign target keyword lists")
+    conn = db()
+    lines = conn.execute("SELECT * FROM product_lines ORDER BY name").fetchall()
     with st.expander("\u2795  Create new product line", expanded=len(lines)==0):
-        c1,c2=st.columns([1,1],gap="large")
-        with c1: new_name=st.text_input("Name",placeholder="e.g. Coffee Machines")
-        new_kws=st.text_area("Keywords",placeholder="One per line or comma-separated:\ncoffee machine\nespresso maker",height=180)
-        kc=len([k.strip() for k in re.split(r"[,\n]+",new_kws) if k.strip()])
-        ca,cb=st.columns([1,3]); ca.caption(str(kc)+" keywords")
-        if cb.button("Create",type="primary",key="cpl"):
-            if not new_name.strip(): st.error("Enter a name.")
+        c1, c2 = st.columns([1,1], gap="large")
+        with c1:
+            new_name = st.text_input("Product line name", placeholder="e.g. Coffee Machines")
+        new_kws = st.text_area("Keywords",
+                               placeholder="One keyword per line or comma-separated:\ncoffee machine\nespresso maker\nautomatic coffee maker\nbarista",
+                               height=190)
+        kc = len([k.strip() for k in re.split(r"[,\n]+", new_kws) if k.strip()])
+        ca, cb = st.columns([1,4])
+        ca.caption(str(kc) + " keywords detected")
+        if cb.button("Create product line", type="primary", key="cpl"):
+            if not new_name.strip():
+                st.error("Please enter a name.")
             else:
-                kws=[k.strip() for k in re.split(r"[,\n]+",new_kws) if k.strip()]
-                try: conn.execute("INSERT INTO product_lines (name,keywords) VALUES (?,?)",(new_name.strip(),json.dumps(kws))); conn.commit(); st.success("\u2713 Created!"); st.rerun()
+                kws = [k.strip() for k in re.split(r"[,\n]+", new_kws) if k.strip()]
+                try:
+                    conn.execute("INSERT INTO product_lines (name,keywords) VALUES (?,?)",
+                                 (new_name.strip(), json.dumps(kws)))
+                    conn.commit()
+                    st.success("\u2713 Product line '" + new_name.strip() + "' created with " + str(len(kws)) + " keywords!")
+                    st.rerun()
                 except Exception as e: st.error(str(e))
-    show('<div style="height:8px"></div>')
-    if not lines: empty_state("\U0001f3f7\ufe0f","No product lines yet","Create your first product line above.")
+    show('<div style="height:10px"></div>')
+    if not lines:
+        empty_state("\U0001f3f7\ufe0f","No product lines yet","Use the form above to create your first product line.")
     for line in lines:
-        kws=json.loads(line["keywords"])
-        with st.expander(line["name"]+"  \u00b7  "+str(len(kws))+" keywords"):
-            show("".join(pill(k,"suggest") for k in kws[:25])+(' <span style="color:#4A4A7A;font-size:.78rem">+'+str(len(kws)-25)+' more</span>' if len(kws)>25 else ""))
-            show('<div style="height:8px"></div>')
-            c1,c2=st.columns([1,1],gap="large")
-            with c1: en=st.text_input("Name",value=line["name"],key="ln_"+str(line["id"]))
-            ek=st.text_area("Keywords (one per line)",value="\n".join(kws),height=180,key="lk_"+str(line["id"]))
-            ca,cb=st.columns([1,4])
-            if ca.button("Save",key="ls_"+str(line["id"])):
-                nk=[k.strip() for k in ek.strip().splitlines() if k.strip()]
-                conn.execute("UPDATE product_lines SET name=?,keywords=? WHERE id=?",(en.strip(),json.dumps(nk),line["id"])); conn.commit(); st.success("Saved!"); st.rerun()
-            if cb.button("Delete product line",key="ld_"+str(line["id"])): conn.execute("DELETE FROM product_lines WHERE id=?",(line["id"],)); conn.commit(); st.rerun()
+        kws = json.loads(line["keywords"])
+        with st.expander(line["name"] + "  \u00b7  " + str(len(kws)) + " keywords  \u00b7  created " + str(line["created_at"] or "")[:10]):
+            show("".join(pill(k,"suggest") for k in kws[:30])
+                 + (' <span style="color:#7B7BAA;font-size:.78rem">+' + str(len(kws)-30) + ' more</span>' if len(kws)>30 else ""))
+            show('<div style="height:10px"></div>')
+            c1, c2 = st.columns([1,1], gap="large")
+            with c1: en = st.text_input("Name", value=line["name"], key="ln_"+str(line["id"]))
+            ek = st.text_area("Keywords (one per line)", value="\n".join(kws), height=190, key="lk_"+str(line["id"]))
+            ca, cb = st.columns([1,4])
+            if ca.button("Save", key="ls_"+str(line["id"])):
+                nk = [k.strip() for k in ek.strip().splitlines() if k.strip()]
+                conn.execute("UPDATE product_lines SET name=?,keywords=? WHERE id=?",
+                             (en.strip(), json.dumps(nk), line["id"]))
+                conn.commit(); st.success("\u2713 Saved!"); st.rerun()
+            if cb.button("Delete this product line", key="ld_"+str(line["id"])):
+                conn.execute("DELETE FROM product_lines WHERE id=?", (line["id"],))
+                conn.commit(); st.rerun()
     conn.close()
 
 # ── SCORING RULES ──────────────────────────────────────────────────────────────
 elif page == "\u2699\ufe0f  Scoring Rules":
-    page_header("Scoring Rules","Configure how listings are scored")
-    conn=db(); rules=conn.execute("SELECT * FROM scoring_rules ORDER BY is_default DESC,name").fetchall()
-    with st.expander("\u2795  Create new rule"):
-        rname=st.text_input("Rule name",placeholder="e.g. Strict SEO")
-        show(section_label("Category Weights — must sum to 100"))
-        rc1,rc2,rc3,rc4=st.columns(4)
-        tw=rc1.number_input("Title %",0,100,25,key="ntw"); bw=rc2.number_input("Bullets %",0,100,25,key="nbw")
-        aw=rc3.number_input("A+ %",0,100,25,key="naw"); kw_=rc4.number_input("Keywords %",0,100,25,key="nkw")
-        tw_=tw+bw+aw+kw_; ok=tw_==100
-        show('<p style="font-size:.85rem;font-weight:600;color:'+("#22C55E" if ok else "#EF4444")+';margin:4px 0 14px">Total: '+str(tw_)+"/100 "+("\u2713 Good" if ok else "\u26a0\ufe0f Must equal 100")+'</p>')
-        cx,cy=st.columns(2,gap="large")
+    page_header("Scoring Rules","Define how listings are evaluated and weighted")
+    conn = db()
+    rules = conn.execute("SELECT * FROM scoring_rules ORDER BY is_default DESC, name").fetchall()
+    with st.expander("\u2795  Create new scoring rule"):
+        rname = st.text_input("Rule name", placeholder="e.g. Strict SEO, Premium Listings")
+        show(section_label("Category weights \u2014 must sum to 100"))
+        rc1,rc2,rc3,rc4 = st.columns(4)
+        tw  = rc1.number_input("Title %",     0, 100, 25, key="ntw")
+        bw  = rc2.number_input("Bullets %",   0, 100, 25, key="nbw")
+        aw  = rc3.number_input("A+ Content %",0, 100, 25, key="naw")
+        kw_ = rc4.number_input("Keywords %",  0, 100, 25, key="nkw")
+        tw_ = tw + bw + aw + kw_; ok = tw_ == 100
+        show('<div style="background:' + ("rgba(34,197,94,.08)" if ok else "rgba(239,68,68,.08)") +
+             ';border:1px solid ' + ("rgba(34,197,94,.25)" if ok else "rgba(239,68,68,.25)") +
+             ';border-radius:10px;padding:10px 14px;margin:8px 0 16px;font-size:.85rem;font-weight:600;color:'
+             + ("#86EFAC" if ok else "#FCA5A5") + '">'
+             + ("\u2713 Weights sum to 100 \u2014 good to go" if ok else "\u26a0\ufe0f Total is " + str(tw_) + "/100 \u2014 must equal exactly 100")
+             + '</div>')
+        cx, cy = st.columns(2, gap="large")
         with cx:
-            show(section_label("Title")); tca,tcb=st.columns(2)
-            tmin=tca.number_input("Min chars",1,500,80,key="ntmin"); tmax=tcb.number_input("Max chars",1,500,200,key="ntmax")
-            tkif=st.checkbox("Primary keyword in first 80 chars",True,key="ntkif")
+            show(section_label("Title rules"))
+            tca, tcb = st.columns(2)
+            tmin = tca.number_input("Min chars",  1, 500, 80,  key="ntmin")
+            tmax = tcb.number_input("Max chars",  1, 500, 200, key="ntmax")
+            tkif = st.checkbox("Primary keyword must appear in first 80 chars", True, key="ntkif")
         with cy:
-            show(section_label("Bullets")); bca,bcb,bcc=st.columns(3)
-            bmc=bca.number_input("Min count",1,20,5,key="nbmc"); bml=bcb.number_input("Min chars",1,500,100,key="nbml"); bmx=bcc.number_input("Max chars",1,1000,255,key="nbmx")
-            show(section_label("Keywords")); kmc=st.slider("Min coverage %",0,100,70,key="nkmc")
-            kit=st.checkbox("Top 3 keywords in title",True,key="nkit")
-        if st.button("Create rule",type="primary",disabled=(not ok),key="cr"):
-            if not rname.strip(): st.error("Enter a name.")
+            show(section_label("Bullet point rules"))
+            bca, bcb, bcc = st.columns(3)
+            bmc = bca.number_input("Min count", 1, 20,   5,   key="nbmc")
+            bml = bcb.number_input("Min chars", 1, 500,  100, key="nbml")
+            bmx = bcc.number_input("Max chars", 1, 1000, 255, key="nbmx")
+            show(section_label("Keyword rules"))
+            kmc = st.slider("Minimum keyword coverage %", 0, 100, 70, key="nkmc")
+            kit = st.checkbox("Top 3 keywords must appear in title", True, key="nkit")
+        if st.button("Create rule", type="primary", disabled=(not ok), key="cr"):
+            if not rname.strip(): st.error("Enter a rule name.")
             else:
-                try: conn.execute("INSERT INTO scoring_rules (name,title_weight,bullets_weight,aplus_weight,keywords_weight,title_min_length,title_max_length,title_keyword_in_first,bullets_min_count,bullets_min_length,bullets_max_length,keywords_min_coverage,keywords_in_title) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)",(rname.strip(),tw,bw,aw,kw_,tmin,tmax,int(tkif),bmc,bml,bmx,kmc,int(kit))); conn.commit(); st.success("\u2713 Rule created!"); st.rerun()
+                try:
+                    conn.execute(
+                        "INSERT INTO scoring_rules (name,title_weight,bullets_weight,aplus_weight,keywords_weight,"
+                        "title_min_length,title_max_length,title_keyword_in_first,bullets_min_count,"
+                        "bullets_min_length,bullets_max_length,keywords_min_coverage,keywords_in_title) "
+                        "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                        (rname.strip(),tw,bw,aw,kw_,tmin,tmax,int(tkif),bmc,bml,bmx,kmc,int(kit)))
+                    conn.commit(); st.success("\u2713 Rule created!"); st.rerun()
                 except Exception as e: st.error(str(e))
-    show('<div style="height:8px"></div>')
+    show('<div style="height:10px"></div>')
     for rule in rules:
-        with st.expander(rule["name"]+(" (Default)" if rule["is_default"] else "")):
-            show('<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">'
-                 '<div style="background:rgba(124,58,237,.07);border-radius:10px;padding:12px 16px">'
-                 +section_label("Weights")+
-                 '<p style="font-size:.855rem;color:#7070A0;margin:0">Title <b>'+str(rule["title_weight"])+'%</b> \u00b7 Bullets <b>'+str(rule["bullets_weight"])+'%</b> \u00b7 A+ <b>'+str(rule["aplus_weight"])+'%</b> \u00b7 Keywords <b>'+str(rule["keywords_weight"])+'%</b></p></div>'
-                 '<div style="background:rgba(124,58,237,.07);border-radius:10px;padding:12px 16px">'
-                 +section_label("Thresholds")+
-                 '<p style="font-size:.855rem;color:#7070A0;margin:0">Title <b>'+str(rule["title_min_length"])+'\u2013'+str(rule["title_max_length"])+'</b> chars \u00b7 Bullets min <b>'+str(rule["bullets_min_count"])+'</b> \u00b7 KW \u2265<b>'+str(round(rule["keywords_min_coverage"]))+'%</b></p></div></div>')
+        tag = " \u2605 Default" if rule["is_default"] else ""
+        with st.expander(rule["name"] + tag):
+            show('<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:10px">'
+                 '<div style="background:#0F0F20;border:1px solid rgba(124,58,237,.15);border-radius:12px;padding:16px 18px">'
+                 + section_label("Weights") +
+                 '<div style="display:flex;flex-direction:column;gap:6px">'
+                 + "".join('<div style="display:flex;justify-content:space-between;align-items:center">'
+                           '<span style="font-size:.84rem;color:#A0A0D0">' + n + '</span>'
+                           '<span style="font-size:.9rem;font-weight:700;color:#C4B5FD">' + str(v) + '%</span>'
+                           '</div>'
+                           for n, v in [("Title", rule["title_weight"]),("Bullets",rule["bullets_weight"]),
+                                        ("A+ Content",rule["aplus_weight"]),("Keywords",rule["keywords_weight"])])
+                 + '</div></div>'
+                 '<div style="background:#0F0F20;border:1px solid rgba(124,58,237,.15);border-radius:12px;padding:16px 18px">'
+                 + section_label("Thresholds") +
+                 '<div style="display:flex;flex-direction:column;gap:6px">'
+                 + "".join('<div style="display:flex;justify-content:space-between;align-items:center">'
+                           '<span style="font-size:.84rem;color:#A0A0D0">' + n + '</span>'
+                           '<span style="font-size:.84rem;font-weight:600;color:#C4B5FD">' + v + '</span>'
+                           '</div>'
+                           for n, v in [
+                               ("Title length", str(rule["title_min_length"])+"\u2013"+str(rule["title_max_length"])+" chars"),
+                               ("Min bullets", str(rule["bullets_min_count"])),
+                               ("Bullet length", str(rule["bullets_min_length"])+"\u2013"+str(rule["bullets_max_length"])+" chars"),
+                               ("KW coverage", "\u2265" + str(round(rule["keywords_min_coverage"])) + "%"),
+                           ])
+                 + '</div></div></div>')
             if not rule["is_default"]:
-                if st.button("Delete rule",key="rd_"+str(rule["id"])): conn.execute("DELETE FROM scoring_rules WHERE id=?",(rule["id"],)); conn.commit(); st.rerun()
+                if st.button("\U0001f5d1  Delete rule", key="rd_"+str(rule["id"])):
+                    conn.execute("DELETE FROM scoring_rules WHERE id=?", (rule["id"],))
+                    conn.commit(); st.rerun()
     conn.close()
